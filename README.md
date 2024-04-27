@@ -7,6 +7,7 @@ pfms，中文名称：私人文件管理系统，它是基于 [EasyFS](https://g
 ## 平台支持
 1. Windows
 2. Linux
+3. 测试
 
 ## 预览
 ![image](https://raw.githubusercontent.com/Mrbby/images/master/pfms/01.png)
