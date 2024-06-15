@@ -30,20 +30,23 @@
                 </button>
                 <button id="btnUpload" class="layui-btn layui-btn-sm layui-btn-normal icon-btn"><i class="layui-icon">&#xe681;</i>上传文件
                 </button>
-                <button id="btnNewDir" class="layui-btn layui-btn-sm layui-btn-normal icon-btn"><i class="layui-icon layui-icon-add-circle"></i>新建文件夹
+                <button id="btnNewDir" class="layui-btn layui-btn-sm layui-btn-normal icon-btn"><i
+                        class="layui-icon layui-icon-add-circle"></i>新建文件夹
                 </button>
-                <button id="btnDelDir" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon layui-icon-delete"></i>刪除目录
+                <button id="btnDelDir" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i
+                        class="layui-icon layui-icon-delete"></i>刪除目录
                 </button>
-                <button id="btnRname" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon layui-icon-edit"></i>重命名目录
+                <button id="btnRname" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i
+                        class="layui-icon layui-icon-edit"></i>重命名目录
                 </button>
-                <button id="ctrl" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon layui-icon-app"></i>控制菜单
+                <button id="ctrl" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i
+                        class="layui-icon layui-icon-app"></i>控制菜单
                 </button>
             </div>
             <div class="file-list"></div>
         </div>
     </div>
 </div>
-
 
 
 <!-- 下拉菜单 -->
@@ -67,7 +70,8 @@
 <!-- 渲染模板 -->
 <script id="fileTpl" type="text/html">
     {{#  layui.each(d, function(index, item){ }}
-    <div class="file-list-item" data-dir="{{item.isDir}}" data-url="{{item.url}}" data-name="{{item.name}}" data-preview="{{item.preview}}">
+    <div class="file-list-item" data-dir="{{item.isDir}}" data-url="{{item.url}}" data-name="{{item.name}}"
+         data-preview="{{item.preview}}">
         <div class="file-list-img {{item.hasSm?'media':''}}">
             {{# if(item.hasSm){ }}
             <img src="{{item.smUrl}}"/>
@@ -131,33 +135,31 @@
         }
 
         function renderListTimeOut(dir) {
-            setInterval(function (){
-                if ($('#tvFP').text() == '/') {
-                    $('#btnDelDir').hide();
-                    $('#btnRname').hide();
-                } else {
-                    $('#btnDelDir').show();
-                    $('#btnRname').show();
-                }
-                if (!dir) {
-                    dir = $('#tvFP').text();
-                }
-                $.get(baseServer + 'api/list', {
-                    dir: dir
-                }, function (res) {
-                    if (res.code == 200) {
-                        for (var i = 0; i < res.data.length; i++) {
-                            res.data[i].url = baseServer + 'file/' + res.data[i].url;
-                            res.data[i].smUrl = baseServer + 'file/sm?p=' + res.data[i].smUrl;
-                        }
-                        laytpl(fileTpl.innerHTML).render(res.data, function (html) {
-                            $('.file-list').html(html);
-                        });
-                    } else {
-                        layer.msg(res.msg, {icon: 2});
+            if ($('#tvFP').text() == '/') {
+                $('#btnDelDir').hide();
+                $('#btnRname').hide();
+            } else {
+                $('#btnDelDir').show();
+                $('#btnRname').show();
+            }
+            if (!dir) {
+                dir = $('#tvFP').text();
+            }
+            $.get(baseServer + 'api/list', {
+                dir: dir
+            }, function (res) {
+                if (res.code == 200) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        res.data[i].url = baseServer + 'file/' + res.data[i].url;
+                        res.data[i].smUrl = baseServer + 'file/sm?p=' + res.data[i].smUrl;
                     }
-                });
-            },2000)
+                    laytpl(fileTpl.innerHTML).render(res.data, function (html) {
+                        $('.file-list').html(html);
+                    });
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                }
+            });
         }
 
         renderList();
@@ -167,7 +169,7 @@
             elem: '#btnUpload',
             data: {},
             url: baseServer + 'file/upload',
-            before:function(obj){
+            before: function (obj) {
                 // 动态传参
                 this.data.curPos = $('#tvFP').text();
             },
@@ -284,7 +286,7 @@
                 formType: 0,
                 value: mUrl.substr(mUrl.lastIndexOf('/') + 1),
                 title: '新文件名'
-            }, function(value, index, elem){
+            }, function (value, index, elem) {
                 var oldFile = mUrl.substring(mUrl.indexOf('/file/') + 6);
                 var newFile = mUrl.substr(7, mUrl.lastIndexOf('/') - 6) + value;
                 layer.load(2);
@@ -310,7 +312,7 @@
                 formType: 0,
                 value: '30',
                 title: '设置时间(分钟)'
-            }, function(value, index, elem){
+            }, function (value, index, elem) {
                 var file = mUrl.substr(7);
                 layer.load(2);
                 $.post(baseServer + 'api/share', {
@@ -323,8 +325,8 @@
                             title: res.msg,
                             content: '链接：' + res.url,
                             btn: ['复制链接'],
-                            btn1: function(index, layero){
-                                var clipboard = new ClipboardJS(".layui-layer-btn0",{
+                            btn1: function (index, layero) {
+                                var clipboard = new ClipboardJS(".layui-layer-btn0", {
                                     text: function () {
                                         return res.url;
                                     }
@@ -356,7 +358,7 @@
                 fixed: false,
                 resize: true,
                 end: function () {
-                    if (typeof(mFsUrls) != "undefined" && mFsUrls.length > 0) {
+                    if (typeof (mFsUrls) != "undefined" && mFsUrls.length > 0) {
                         layer.msg('你选择了：' + JSON.stringify(mFsUrls), {icon: 1});
                         mFsUrls = undefined;
                     }
@@ -370,7 +372,7 @@
                 formType: 0,
                 value: "新建文件夹",
                 title: '文件名'
-            }, function(value, index, elem){
+            }, function (value, index, elem) {
                 var curPos = $('#tvFP').text();
                 layer.load(2);
                 $.get(baseServer + 'api/mkdir', {
@@ -391,7 +393,7 @@
 
         // 删除当前目录
         $('#btnDelDir').click(function () {
-            layer.confirm('将删除此目录下所有文件', {icon: 3, title:'确认'}, function(index){
+            layer.confirm('将删除此目录下所有文件', {icon: 3, title: '确认'}, function (index) {
                 var curPos = $('#tvFP').text().substr(1);
                 layer.load(2);
                 $.get(baseServer + 'api/del', {
@@ -416,7 +418,7 @@
                 formType: 0,
                 value: tvFP,
                 title: '新目录名'
-            }, function(value, index, elem){
+            }, function (value, index, elem) {
                 layer.load(2);
                 $.get(baseServer + 'api/rename', {
                     oldFile: tvFP.substr(1),
